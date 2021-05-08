@@ -59,6 +59,7 @@ def parse_movies(movies_file_name, rating_file_name, tag_file_name):
     except:
         print(f'Error! file {rating_file_name} not found')
         return None
+    '''
     try:
         tag_file_path = f'{PATH}{tag_file_name}'
         tags_tree = TernarySearchTreeTags()
@@ -66,11 +67,12 @@ def parse_movies(movies_file_name, rating_file_name, tag_file_name):
             # Eliminates Header
             tags.readline()
             for tag in tags:
-                movie_
+                movie_id =
 
 
     except:
         print(f'Error! file {tag_file_name} not found')
         return None
+    '''
     print(f'{(time.time() - execution_start) / 60} min')
     return movies_hash_map, user_hash, ternary_search_tree
