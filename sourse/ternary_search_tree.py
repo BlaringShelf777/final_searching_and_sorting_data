@@ -34,7 +34,10 @@ class TernarySearchTree:
     def query(self, word, prefix=True):
         if word == '':
             return 
+        global movie_list
+        movie_list = list()
         self.__query(word.lower(), self.root, prefix)
+        return movie_list
     
     def __query(self, word, node, prefix, found=''):
         if node == None:
@@ -44,7 +47,7 @@ class TernarySearchTree:
             if node.key == letter:
                 found += letter
                 if len(word) == 1 and node.label != None:
-                    print(f'{found}, {node.label}')
+                    movie_list.append(node.label)
                     if not prefix:
                         return
                 self.__query(word[1:], node.child[1], prefix, found)
@@ -55,7 +58,7 @@ class TernarySearchTree:
             return
         else:
             if node.label != None:
-                print(f'{found}{node.key}, {node.label}')
+                movie_list.append(node.label)
             if node.child[1] != None:
                 self.__query(word, node.child[1], prefix, found + node.key)
             self.__query(word, node.child[0], prefix, found)
