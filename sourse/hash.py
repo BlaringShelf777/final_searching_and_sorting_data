@@ -189,6 +189,9 @@ class Movie:
     def increase_rating(self, rating):
         self.total_rating += rating
         self.rating_count += 1
+    
+    def calc_rating(self):
+        return self.total_rating / self.rating_count if self.rating_count else 0
 
 class User:
     def __init__(self, user_id=None, ocuppied=False):
@@ -222,3 +225,4 @@ class Genre:
     
     def insert_movie_id(self, movie_id):
         self.movies.append(movie_id)
+    

@@ -31,7 +31,8 @@ def print_movie(id, movie_title, gender, rating, rating_count):
     print(f'{movie_id}   |{movie_title}   |{movie_genders}   |{movie_rating}   |{rating_count}')
 
 def print_user_rating_header():
-    print(f'User Rating   Title{" " * (M_TITLE_LEN + 7)} Global Rating{" " * (M_RATING_LEN - 5)} Count')
+    print(f'User Rating    Title{" " * (M_TITLE_LEN + 7)} Global Rating{" " * (M_RATING_LEN - 5)} Count')
+    print(f'{SYM * (M_TITLE_LEN + M_GENRE_LEN + M_RATING_LEN)}')
 
 def print_user_rating(user_rating, movie_title, movie_rating, rating_count):
     user_rating = str(user_rating)

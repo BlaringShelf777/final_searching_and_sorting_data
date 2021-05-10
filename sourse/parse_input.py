@@ -73,10 +73,8 @@ def parse_movies(movies_file_name, rating_file_name, tag_file_name):
             for tag in tags:
                 # Parse CSV line: Movie id - User tag
                 movie_id, user_tag = re.findall(r'.*?,(.*?),"(.*?)",', tag)[0]
-                movie_id = int(movie_id)
-                user_tag = user_tag.lower()
                 # Adds the tag to the hash
-                tags_hash.add_tag(user_tag, movie_id)
+                tags_hash.add_tag(user_tag.lower(), int(movie_id))
     except:
         print(f'Error! file {tag_file_name} not found')
         return None
