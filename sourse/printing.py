@@ -1,4 +1,5 @@
 from math import trunc
+import os
 
 # Movie
 M_ID_LEN     = 6
@@ -47,3 +48,27 @@ def print_user_rating(user_rating, movie_title, movie_rating, rating_count):
     if len(movie_rating) > M_RATING_LEN: movie_rating = movie_rating[:M_RATING_LEN]
     # Prints
     print(f'{user_rating}   |{movie_title}   {" " * 9}|{movie_rating}        |{rating_count}')
+
+# The screen clear function
+def screen_clear():
+    input('\n> Precione \'Enter\' para continuar...')
+    # for mac and linux(here, os.name is 'posix')
+    if os.name == 'posix':
+        _ = os.system('clear')
+    else:
+    # for windows platfrom
+      _ = os.system('cls')
+
+
+def query_header():
+    print('''\n
+               Operações
+    _______________________________
+
+        > movie <movie_prefix>
+        > user <user_id>
+        > top<N> '<genre>'
+        > tags '<list of tags>'
+        > exit
+    _______________________________
+     \n''')
