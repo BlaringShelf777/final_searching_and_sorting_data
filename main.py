@@ -79,11 +79,11 @@ movies_hash, genres_hash, users_hash, tags_hash, ternary_search_tree = parse_mov
 p.screen_clear()
 user_input = ''
 
-
 while user_input != 'exit':
     p.query_header()
     user_input = str(input('$ ')).lower()
     print('\n')
+    
     if user_input.startswith('movie '):
         movie_prefix = re.findall(r'movie (.*)', user_input)[0]
         movie(movie_prefix)

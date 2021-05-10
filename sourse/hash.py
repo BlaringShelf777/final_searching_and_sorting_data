@@ -158,6 +158,7 @@ class Hash:
 
     # Hashing Funtion for movie_id and user_id
     def hash_function_number(self, number, index=0):
+        number -= 1
         return (number + index * self.prime_list[index % len(self.prime_list)] * self.hashFuncAux(number, index)) % self.M
 
     # Hashing Functions for tags (strings)
@@ -167,8 +168,8 @@ class Hash:
             key += self.hash_function_number(ord(letter), index)
         return key % self.M
 
-# Hash items
 
+# Hash items
 class Movie:
     def __init__(self, movie_id=None, movie_title=None, movie_genres=None, ocuppied=False):
         self.id = movie_id                  # Movie Id      (Int)
