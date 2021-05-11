@@ -28,10 +28,14 @@ class Hash:
         if self.type == MOVIE:
             hash_key = self.hash_function_number(movie_id)
             index = 0
-            while self.hash_map[hash_key].ocuppied and index < self.N:
+            while self.hash_map[hash_key].ocuppied and index < self.N and self.hash_map[hash_key].id != movie_id:
                 index += 1
                 hash_key = self.hash_function_number(movie_id, index)
-            if self.hash_map[hash_key].ocuppied:
+            if movie_id == self.hash_map[hash_key].id:
+                self.hash_map[hash_key].title = movie_title
+                self.hash_map[hash_key].genres = movie_genres
+                return True
+            elif self.hash_map[hash_key].ocuppied:
                 return False
             self.hash_map[hash_key] = Movie(movie_id, movie_title, movie_genres, True)
             return True
@@ -108,14 +112,25 @@ class Hash:
 
     ## Query:
     # Queries for a movie in the hash map
-    def query_hash_movie(self, movie_id):
+    def query_hash_movie(self, movie_id, add=False):
         if self.type == MOVIE:
             index = 0
-            hash_key = self.hash_function_number(movie_id) 
-            while self.hash_map[hash_key].id != movie_id and index < self.N:
-                index += 1
-                hash_key = self.hash_function_number(movie_id, index)
-            return self.hash_map[hash_key] if self.hash_map[hash_key].ocuppied and self.hash_map[hash_key].id == movie_id else None                          
+            hash_key = self.hash_function_number(movie_id)
+            if add:
+                while self.hash_map[hash_key].id != movie_id and index < self.N and self.hash_map[hash_key].ocuppied:
+                    index += 1
+                    hash_key = self.hash_function_number(movie_id, index)
+                if not self.hash_map[hash_key].ocuppied:
+                    self.hash_map[hash_key] = Movie(movie_id)
+                    self.hash_map[hash_key].ocuppied = True
+                    return self.hash_map[hash_key]
+                else:
+                    return self.hash_map[hash_key] if self.hash_map[hash_key].ocuppied and self.hash_map[hash_key].id == movie_id else None 
+            else:
+                while self.hash_map[hash_key].id != movie_id and index < self.N:
+                    index += 1
+                    hash_key = self.hash_function_number(movie_id, index)
+                return self.hash_map[hash_key] if self.hash_map[hash_key].ocuppied and self.hash_map[hash_key].id == movie_id else None                          
         return None
 
     # Queries for an user in the hash map
@@ -167,6 +182,7 @@ class Hash:
         for letter in tag:
             key += self.hash_function_number(ord(letter), index)
         return key % self.M
+
 
 
 # Hash items

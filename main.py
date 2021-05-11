@@ -83,7 +83,7 @@ while user_input != 'exit':
     p.query_header()
     user_input = str(input('$ ')).lower()
     print('\n')
-    
+
     if user_input.startswith('movie '):
         movie_prefix = re.findall(r'movie (.*)', user_input)[0]
         movie(movie_prefix)
