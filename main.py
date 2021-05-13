@@ -36,24 +36,32 @@ def tags(tag_list):
     tagged_movies = list()
     # Create a list of all the movies
     for tag in tag_list:
-        tag_obj = tags_hash.query_hash_tag(tag)
+        tag_obj = tags_hash.query_hash_tag(tag.lower())
         if tag_obj == None: continue
         all_movies += tag_obj.movies
-    # Creates a list only with the common movies among the valid tags
-    for index, movie_id in enumerate(all_movies):
-        if (movie_id in all_movies[:index] or movie_id in all_movies[index + 1:]) and not movie_id in tagged_movies:
-            tagged_movies.append(movie_id)
-    # Prints
-    if len(tagged_movies) == 0:
-        print(f'> Nenhum filme associado a(s) tag(s) {", ".join([tag for tag in tag_list])}')
+    
+    if len(tag_list) > 1:
+        for index, movie_id in enumerate(all_movies):
+            if (movie_id in all_movies[:index] or movie_id in all_movies[index + 1:]) and not movie_id in tagged_movies:
+                tagged_movies.append(movie_id)
+        # Prints
+        if len(tagged_movies) == 0:
+            print(f'> Nenhum filme associado a(s) tag(s) {", ".join([tag for tag in tag_list])}')
+            p.screen_clear()
+            return
+        p.print_movie_header()
+        for movie_id in tagged_movies:
+            movie = movies_hash.query_hash_movie(movie_id)
+            movie_rating = movie.total_rating / movie.rating_count if movie.rating_count else '0.0'
+            p.print_movie(movie.id, movie.title, movie.genres, movie_rating, movie.rating_count)
         p.screen_clear()
-        return
-    p.print_movie_header()
-    for movie_id in tagged_movies:
-        movie = movies_hash.query_hash_movie(movie_id)
-        movie_rating = movie.total_rating / movie.rating_count if movie.rating_count else '0.0'
-        p.print_movie(movie.id, movie.title, movie.genres, movie_rating, movie.rating_count)
-    p.screen_clear()
+    else:
+        p.print_movie_header()
+        for movie_id in all_movies:
+            movie = movies_hash.query_hash_movie(movie_id)
+            movie_rating = movie.total_rating / movie.rating_count if movie.rating_count else '0.0'
+            p.print_movie(movie.id, movie.title, movie.genres, movie_rating, movie.rating_count)
+        p.screen_clear()
 
 def top_n(genre, n):
     genre_obj = genres_hash.query_hash_genre(genre)
@@ -72,6 +80,25 @@ def top_n(genre, n):
             p.print_movie(movie.id, movie.title, movie.genres, movie.calc_rating(), movie.rating_count)
             movie_count += 1
         movie_index -= 1
+    p.screen_clear()
+
+def crap_n(genre, n):
+    genre_obj = genres_hash.query_hash_genre(genre)
+    if genre == None:
+        print(f'> Gênero {genre} não encontrado.\n')
+        p.screen_clear()
+        return
+    movies = genre_obj.movies
+    quick_sort(movies, movies_hash, 0, len(movies) - 1)
+    p.print_movie_header()
+    movie_index = 0
+    movie_count = 0
+    while movie_index < len(movies) and  movie_count < n:
+        movie = movies_hash.query_hash_movie(movies[movie_index])
+        if movie.rating_count >= MIN_COUNT:
+            p.print_movie(movie.id, movie.title, movie.genres, movie.calc_rating(), movie.rating_count)
+            movie_count += 1
+        movie_index += 1
     p.screen_clear()
 
 # Genarate structures
@@ -102,6 +129,13 @@ while user_input != 'exit':
             top_n(genre, int(n))
         except:
             print('> Função top usada de forma incorreta: top<N> \'<genre>\'\n')
+    
+    elif user_input.startswith('crap'):
+        try:
+            n, genre = re.findall(r'crap(.*?) \'(.*?)\'', user_input)[0]
+            crap_n(genre, int(n))
+        except:
+            print('> Função crap usada de forma incorreta: crap<N> \'<genre>\'\n')
 
     elif user_input.startswith('tags '):
         try:

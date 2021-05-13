@@ -68,6 +68,7 @@ def query_header():
         > movie <movie_prefix>
         > user <user_id>
         > top<N> '<genre>'
+        > crap<N> '<genre>'
         > tags '<list of tags>'
         > exit
     _______________________________
